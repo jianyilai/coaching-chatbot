@@ -1,1 +1,6 @@
-<p>sign-up works!</p>
+<form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit()">
+    <p><label for="user" class="label form-label">Username</label><input formControlName="username" id="username" placeholder="Enter your username" /></p>
+    <p><label for="email" class="label form-label">Email</label><input formControlName="email" id="email" placeholder="Enter your email" /></p>
+    <p><label for="password" class="label form-label">Password</label><input formControlName="password" id="password" placeholder="Enter your password" /></p>
+    <p><button class="btn btn-primary" type="submit">Register</button></p>
+</form>
