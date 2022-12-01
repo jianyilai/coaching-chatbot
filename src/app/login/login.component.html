@@ -9,18 +9,35 @@
                             class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
                         <div class="login-space">
                             <div class="login">
-                                <form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit()">
+                                <form [formGroup]="authForm" novalidate (ngSubmit)="onSubmitAuth()">
                                     <div class="group"> <label for="user" class="label form-label">Username</label>
                                         <input formControlName="username" id="username" type="text" class="input"
-                                            placeholder="Enter your username"> </div>
+                                            placeholder="Enter your username">
+                                    </div>
                                     <div class="group"> <label for="pass" class="label form-label">Password</label>
-                                        <input formControlName="password" id="password" type="password" class="input" data-type="password"
-                                            placeholder="Enter your password"> </div>
+                                        <input formControlName="password" id="password" type="password" class="input"
+                                            data-type="password" placeholder="Enter your password">
+                                    </div>
                                     <div class="group"> <input type="submit" class="button" value="Sign In"> </div>
                                     <div class="hr"></div>
-                                    <div class="group">
-                                        <p routerLink="/sign-up">Already have an account? Click here.</p>
+                                </form>
+                            </div>
+                            <div class="sign-up-form">
+                                <form [formGroup]="regForm" novalidate (ngSubmit)="onSubmitReg()">
+                                    <div class="group"> <label for="username1" class="label form-label">Username</label>
+                                        <input formControlName="username" id="username1" type="text" class="input"
+                                            placeholder="Enter your username">
                                     </div>
+                                    <div class="group"> <label for="email" class="label form-label">Email</label>
+                                        <input formControlName="email" id="email" type="text" class="input"
+                                            placeholder="Enter your email">
+                                    </div>
+                                    <div class="group"> <label for="password1" class="label form-label">Password</label>
+                                        <input formControlName="password" id="password1" type="password" class="input"
+                                            data-type="password" placeholder="Enter your password">
+                                    </div>
+                                    <div class="group"> <input type="submit" class="button" value="Sign In"> </div>
+                                    <div class="hr"></div>
                                 </form>
                             </div>
                         </div>

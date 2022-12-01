@@ -10,25 +10,32 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  myForm!: FormGroup;
+  regForm!: FormGroup;
   results: any = false;
+  authForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private authService: AuthService,
     private router: Router) { }
 
   ngOnInit() {
-    this.myForm = this.fb.group({
+    this.authForm = this.fb.group({
       username: '',
+      password: ''
+    });
+
+    this.regForm = this.fb.group({
+      username: '',
+      email: '',
       password: ''
     });
   }
 
-  onSubmit() {
-    this.authService.authUser(this.myForm.value.username,
-      this.myForm.value.password).subscribe(data => {
+  onSubmitAuth() {
+    this.authService.authUser(this.authForm.value.username,
+      this.authForm.value.password).subscribe(data => {
         this.results = data;
         if (this.results[0].auth) {
-          this.authService.setSecureToken(this.myForm.value.username);
+          this.authService.setSecureToken(this.authForm.value.username);
           this.authService.setUserRole(this.results[0].role);
           this.router.navigateByUrl('/profile');
           console.log('user signed in')
@@ -37,5 +44,13 @@ export class LoginComponent implements OnInit {
         }
       });
   }
+
+  onSubmitReg() {
+    this.authService.regUser(this.regForm.value.username, this.regForm.value.email, this.regForm.value.password, 'user').subscribe();
+    this.router.navigateByUrl('/login');
+    console.log('user registered')
+  }
+
+  
 
 }
