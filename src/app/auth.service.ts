@@ -41,4 +41,12 @@ export class AuthService {
     sessionStorage.removeItem("LoggedIn");
     sessionStorage.removeItem("UserRole");
   }
+
+  isLoggedIn() {
+    return this.getSecureToken() !== null;
+  }
+
+  isUser() {
+    return (this.getUserRole() == "user");
+  }
 }
