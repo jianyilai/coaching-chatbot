@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.logout();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/sign-in');
   }
 
 }
