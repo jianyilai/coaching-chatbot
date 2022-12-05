@@ -9,6 +9,7 @@ export class AuthService {
 
   regUserUrl: string = "http://localhost:3000/api/reguser/";
   authuser: string = "http://localhost:3000/api/authuser/";
+  
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +26,7 @@ export class AuthService {
       'password': pw
     });
   }
+
   setSecureToken(secure_token: string) {
     sessionStorage.setItem("LoggedIn", secure_token)
   }
@@ -37,9 +39,19 @@ export class AuthService {
   getUserRole() {
     return sessionStorage.getItem("UserRole")
   }
+
+  getUserId() {
+    return sessionStorage.getItem('userid')
+  }
+
+  setUserId(_id: string) {
+    sessionStorage.setItem('userid', _id);
+  }
+
   logout() {
     sessionStorage.removeItem("LoggedIn");
     sessionStorage.removeItem("UserRole");
+    sessionStorage.removeItem("userid");
   }
 
   isLoggedIn() {

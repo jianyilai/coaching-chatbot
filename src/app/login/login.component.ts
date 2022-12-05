@@ -37,6 +37,8 @@ export class LoginComponent implements OnInit {
         if (this.results[0].auth) {
           this.authService.setSecureToken(this.authForm.value.username);
           this.authService.setUserRole(this.results[0].role);
+          this.authService.setUserId(this.results[0].userid);
+          console.log(this.results)
           this.router.navigateByUrl('/profile');
           console.log('user signed in')
         } else {
