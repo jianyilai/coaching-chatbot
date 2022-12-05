@@ -12,9 +12,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { ToDoComponent } from './to-do/to-do.component';
 import { RemindersComponent } from './reminders/reminders.component';
 import { HomeComponent } from './home/home.component';
-import { AuthService } from './auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TokenInterceptor } from "./token-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -35,7 +35,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [AuthService],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,6 +3,7 @@ const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 
+const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const BCRYPT_SALT_ROUNDS = 12;
 
@@ -31,7 +32,11 @@ router.route('/authuser').post(function (req, res2) {
                 if (err || res == false) {
                     res2.send([{ "auth": false }]);
                 } else {
-                    res2.send([{ "auth": true, "role": result.role }]);
+                    console.log(result)
+                    let payload = { userId: result._id, username: result.name, role: result.role };
+                    let token = jwt.sign(payload, "secretkey", {expiresIn: '2h'});
+                    res2.send([{ "auth": true, "role": result.role, "token": token }]);
+                    console.log(token)
                 }
             });
         }
@@ -48,10 +53,28 @@ router.route('/reguser').post(function (req, res) {
             "role": role
         }, (err, result) => {
             if (err) return console.log(err)
+            console.log(result)
             console.log('user registered')
             res.send(result);
         });
     });
 })
+
+function verifyToken(req, res, next) {
+    if (!req.headers.authorization) {
+        return res.status(401).send("Unauthorized request");
+    }
+    let token = req.headers.authorization.split(" ")[1];
+    if (token === "null") {
+        return res.status(401).send("Unauthorized request");
+    }
+    let payload = jwt.verify(token, "secretkey");
+    if (!payload) {
+        return res.status(401).send("Unauthorized request");
+    }
+    req.userId = payload.userId;
+
+    next();
+}
 
 module.exports = router;

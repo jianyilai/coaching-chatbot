@@ -35,8 +35,7 @@ export class LoginComponent implements OnInit {
       this.authForm.value.password).subscribe(data => {
         this.results = data;
         if (this.results[0].auth) {
-          this.authService.setSecureToken(this.authForm.value.username);
-          this.authService.setUserRole(this.results[0].role);
+          this.authService.loggedIn(this.results[0].token);
           this.router.navigateByUrl('/profile');
           console.log('user signed in')
         } else {
@@ -51,6 +50,6 @@ export class LoginComponent implements OnInit {
     console.log('user registered')
   }
 
-  
+
 
 }
