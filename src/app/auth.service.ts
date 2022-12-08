@@ -38,11 +38,12 @@ export class AuthService {
     sessionStorage.setItem("LoggedIn", secure_token)
   }
 
-  //check loggedIn
+  //check for loggedIn
   getSecureToken() {
     return String(sessionStorage.getItem("LoggedIn"))
   }
 
+  //decode the JWT token to look for 'user' role
   getUserRole() {
     var token = this.getSecureToken();
     return this.helper.decodeToken(token).role
