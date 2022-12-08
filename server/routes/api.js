@@ -33,7 +33,7 @@ router.route('/authuser').post(function (req, res2) {
                     res2.send([{ "auth": false }]);
                 } else {
                     console.log(result)
-                    let payload = { userId: result._id, username: result.name, role: result.role };
+                    let payload = { userId: result._id, email: result.email, username: result.name, role: result.role };
                     let token = jwt.sign(payload, "secretkey", {expiresIn: '2h'});
                     res2.send([{ "auth": true, "role": result.role, "token": token }]);
                     console.log(token)

@@ -12,12 +12,6 @@ export class AuthService {
 
   helper = new JwtHelperService();
 
-  currentUser = {
-    userId: "",
-    username: "",
-    role: ""
-  };
-
   constructor(private http: HttpClient) { }
 
   regUser(username: string, email: string, pw: string, role: string) {
@@ -34,7 +28,7 @@ export class AuthService {
     });
   }
 
-  loggedIn(secure_token: string){
+  loggedIn(secure_token: string) {
     sessionStorage.setItem("LoggedIn", secure_token)
   }
 
@@ -43,18 +37,24 @@ export class AuthService {
     return String(sessionStorage.getItem("LoggedIn"))
   }
 
-  //decode the JWT token to look for 'user' role
+  isLoggedIn() {
+    return this.getSecureToken() !== null;
+  }
+
+  //decode the JWT token to for 'user' role
   getUserRole() {
+    var token = this.getSecureToken();
+    return this.helper.decodeToken(token).role
+  }
+
+  //decode the JWT token for user's email
+  getUserEmail() {
     var token = this.getSecureToken();
     return this.helper.decodeToken(token).role
   }
 
   logout() {
     sessionStorage.removeItem("LoggedIn");
-  }
-
-  isLoggedIn() {
-    return this.getSecureToken() !== null;
   }
 
   isUser() {
