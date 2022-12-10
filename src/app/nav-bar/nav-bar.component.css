@@ -14,6 +14,7 @@
     background: #ffffff;
     transition: 0.5s;
     overflow: hidden;
+    display: flex;
 }
 
 .navigation:hover,
