@@ -1,1 +1,65 @@
-<p>profile works!</p>
+<div class="container" style="padding-left: 140px; padding-top: 120px;">
+    <ion-card style="height: 500px; width: 500px;">
+    <ion-card-header>
+      <ion-card-title>Profile</ion-card-title>
+      <ion-card-subtitle>settings</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+        <ion-accordion-group>
+            <ion-accordion value="first">
+                <ion-item slot="header" color="light">
+                  <ion-label>User Details</ion-label>
+                </ion-item>
+                <div class="ion-padding" slot="content">
+                  <p style="padding-left: 18px;">Username: test</p>
+                  <p style="padding-left: 18px;">Email: test@abc.net</p>
+                </div>
+              </ion-accordion>
+            <ion-accordion value="second">
+              <ion-item slot="header" color="light">
+                <ion-label>Change Password</ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <ion-item>
+                    <ion-label>Old Password:</ion-label>
+                    <ion-input placeholder="Enter your old password"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label>New Password:</ion-label>
+                    <ion-input placeholder="Enter your new password"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Re-enter New Password:</ion-label>
+                    <ion-input placeholder="Re-enter your new password"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-button>Submit</ion-button>
+                </ion-item>
+              </div>
+            </ion-accordion>
+            <ion-accordion value="third">
+              <ion-item slot="header" color="light">
+                <ion-label>Change Email Address</ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <ion-item>
+                    <ion-label>Enter New Email:</ion-label>
+                    <ion-input placeholder="Enter your new email"></ion-input>
+                    <ion-button>Send OTP</ion-button>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Enter Verification Code:</ion-label>
+                    <ion-input placeholder="Enter OTP"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-button fill="clear" style="background-color:rgb(0, 237, 59); color: #fff; border-radius: 5px;">Save Changes</ion-button>
+                </ion-item>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+          <br>
+          <ion-button fill="clear" style="background-color:lightcoral; color: #fff; border-radius: 5px;">Log Out</ion-button>
+        </ion-card-content>
+  </ion-card>
+</div>
