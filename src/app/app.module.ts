@@ -32,7 +32,8 @@ import { TokenInterceptor } from "./token-interceptor.service";
     AppRoutingModule,
     IonicModule.forRoot(),
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
