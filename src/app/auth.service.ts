@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EmailValidator } from '@angular/forms';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,8 @@ export class AuthService {
   regUserUrl: string = "http://localhost:3000/api/reguser/";
   authuser: string = "http://localhost:3000/api/authuser/";
   
+
+  helper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
 
@@ -27,35 +29,39 @@ export class AuthService {
     });
   }
 
-  setSecureToken(secure_token: string) {
+  loggedIn(secure_token: string) {
     sessionStorage.setItem("LoggedIn", secure_token)
   }
+
+  //check for loggedIn
   getSecureToken() {
-    return sessionStorage.getItem("LoggedIn")
-  }
-  setUserRole(role: string) {
-    sessionStorage.setItem("UserRole", role);
-  }
-  getUserRole() {
-    return sessionStorage.getItem("UserRole")
-  }
-
-  getUserId() {
-    return sessionStorage.getItem('userid')
-  }
-
-  setUserId(_id: string) {
-    sessionStorage.setItem('userid', _id);
-  }
-
-  logout() {
-    sessionStorage.removeItem("LoggedIn");
-    sessionStorage.removeItem("UserRole");
-    sessionStorage.removeItem("userid");
+    return String(sessionStorage.getItem("LoggedIn"))
   }
 
   isLoggedIn() {
     return this.getSecureToken() !== null;
+  }
+
+  //decode the JWT token to for user's role
+  getUserRole() {
+    var token = this.getSecureToken();
+    return this.helper.decodeToken(token).role
+  }
+
+  //decode the JWT token for userId
+  getUserId() {
+    var token = this.getSecureToken();
+    return this.helper.decodeToken(token).userId
+  }
+
+  //decode the JWT token for user's email
+  getUserEmail() {
+    var token = this.getSecureToken();
+    return this.helper.decodeToken(token).role
+  }
+
+  logout() {
+    sessionStorage.removeItem("LoggedIn");
   }
 
   isUser() {
