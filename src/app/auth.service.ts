@@ -60,6 +60,11 @@ export class AuthService {
     return this.helper.decodeToken(token).role
   }
 
+  getUsername() {
+    var token = this.getSecureToken();
+    return this.helper.decodeToken(token).name
+  }
+
   logout() {
     sessionStorage.removeItem("LoggedIn");
   }
