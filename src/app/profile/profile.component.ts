@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from 'app/user.service';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -9,9 +11,29 @@ import { AuthService } from '../auth.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  public userData: any = [];
+  updatePasswordForm!: FormGroup;
 
-  ngOnInit(): void { }
+  constructor(private authService: AuthService, private userService: UserService, private router: Router, private formBuilder:
+    FormBuilder) {
+    this.updatePasswordForm = this.formBuilder.group({
+      password: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    this.userService.getUserByUID().subscribe((data: any) => {
+      this.userData = data
+      console.log(this.userData)
+    });
+  }
+
+  onUpdatePass() {
+    this.userService.updatePassword(this.updatePasswordForm.value).subscribe(res => {
+      console.log('Password Changed');
+      location.reload();
+    })
+  }
 
   logout() {
     this.authService.logout();

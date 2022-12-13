@@ -8,33 +8,35 @@ import { AuthService } from './auth.service';
 })
 export class ToDoService {
 
-  tasksURL: string;
-  
+  tasksUrl: string;
+
 
   constructor(private http: HttpClient, private authService: AuthService) {
-    this.tasksURL = "http://localhost:3000/api/tasks/";
+    this.tasksUrl = "http://localhost:3000/api/tasks/";
   }
 
   getAllTasks() {
-    return this.http.get<any[]>(this.tasksURL);
+    return this.http.get<any[]>(this.tasksUrl);
   }
 
-  getTasksByUID(userid: string) {
-    return this.http.get<any[]>(this.tasksURL + "/" + this.authService.getUserId);
+  getTasksByUID() {
+    const userId = this.authService.getUserId
+    return this.http.get<any[]>(this.tasksUrl + "/user/" + userId);
   }
 
-  insertTasks(userid: string, title: string, dueBy: Date) {
-    return this.http.post<any[]>(this.tasksURL, { 'userid': this.authService.getUserId, 'title': title, 'dueBy': dueBy });
+  insertTasks(title: string, dueBy: Date) {
+    const userId = this.authService.getUserId
+    return this.http.post<any[]>(this.tasksUrl, { userId, 'title': title, 'dueBy': dueBy });
   }
 
-  deleteTasks(userid: string) {
-    return this.http.delete<any[]>(this.tasksURL + "/" + userid);
+  deleteTasks(_id: string) {
+    return this.http.delete<any[]>(this.tasksUrl + "/" + _id);
   }
 
-  updateTasks(userid: string, title: string, dueBy: Date, newuserid: number) {
-    return this.http.put<any[]>(this.tasksURL + "/" + userid, {
-      'title': title, 'dueBy': dueBy, 'newuserid':
-        newuserid
+  updateTasks(_id: string, title: string, dueBy: Date) {
+    return this.http.put<any[]>(this.tasksUrl + "/" + _id, {
+      'title': title, 'dueBy': dueBy, 'userId':
+        this.authService.getUserId
     });
   }
 }

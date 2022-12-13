@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToDoService } from 'app/to-do.service';
 
 declare var window: any;
 
@@ -9,22 +10,26 @@ declare var window: any;
 })
 export class ToDoComponent implements OnInit {
 
-  formModal: any;
+  toDoList: any = []
 
-  constructor() { }
+  editFormModal: any;
+
+  constructor(private toDoService: ToDoService) {}
 
   ngOnInit(): void {
-    this.formModal = new window.bootstrap.Modal(
-      document.getElementById('myModal')
+    this.editFormModal = new window.bootstrap.Modal(
+      document.getElementById('editFormModal')
     );
   }
 
+  
+
   openFormModal() {
-    this.formModal.show();
+    this.editFormModal.show();
   }
   saveSomeThing() {
     // confirm or save something
-    this.formModal.hide();
+    this.editFormModal.hide();
   }
 
 }

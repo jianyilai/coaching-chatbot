@@ -49,6 +49,4 @@ export class LoginComponent implements OnInit {
     console.log('user registered')
   }
 
-
-
 }

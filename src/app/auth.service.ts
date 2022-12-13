@@ -9,7 +9,7 @@ export class AuthService {
 
   regUserUrl: string = "http://localhost:3000/api/reguser/";
   authuser: string = "http://localhost:3000/api/authuser/";
-  
+
 
   helper = new JwtHelperService();
 
@@ -51,13 +51,14 @@ export class AuthService {
   //decode the JWT token for userId
   getUserId() {
     var token = this.getSecureToken();
+    console.log(this.helper.decodeToken(token).userId)
     return this.helper.decodeToken(token).userId
   }
 
   //decode the JWT token for user's email
   getUserEmail() {
     var token = this.getSecureToken();
-    return this.helper.decodeToken(token).role
+    return this.helper.decodeToken(token).email
   }
 
   getUsername() {
