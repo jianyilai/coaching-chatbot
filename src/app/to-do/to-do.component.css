@@ -1,0 +1,24 @@
+.button-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.container {
+    display: flex;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-left: 60px;
+}
+
+/*temp*/
+ion-col {
+    background-color: #135d54;
+    border: solid 1px #fff;
+    color: #fff;
+}
+
+ion-card {
+    height: auto;
+    width: 1600px;
+}

@@ -1,0 +1,44 @@
+<div class="navigation">
+    <ul>
+        <li>
+            <a routerLink="">
+                <span class="icon">
+                    <ion-icon name="home-outline"></ion-icon>
+                </span>
+                <span class="title">Home</span>
+            </a>
+        </li>
+        <li>
+            <a *ngIf="isLoggedIn" routerLink="/profile">
+                <span class="icon">
+                    <ion-icon name="person-outline"></ion-icon>
+                </span>
+                <span class="title">Profile</span>
+            </a>
+        </li>
+        <li>
+            <a *ngIf="isLoggedIn" routerLink="/to-do">
+                <span class="icon">
+                    <ion-icon name="create-outline"></ion-icon>
+                </span>
+                <span class="title">To-Do</span>
+            </a>
+        </li>
+        <li>
+            <a *ngIf="!isLoggedIn" routerLink="/login">
+                <span class="icon">
+                    <ion-icon name="enter-outline"></ion-icon>
+                </span>
+                <span class="title">Login/Sign Up</span>
+            </a>
+        </li>
+        <li>
+            <a *ngIf="isLoggedIn" (click)="logout()">
+                <span class="icon">
+                    <ion-icon name="exit-outline"></ion-icon>
+                </span>
+                <span class="title">Logout</span>
+            </a>
+        </li>
+    </ul>
+</div>

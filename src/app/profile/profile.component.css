@@ -1,0 +1,10 @@
+.container {
+    padding-left: 250px;
+    padding-top: 100px;
+}
+
+ion-card {
+    height: 500px;
+    width: 800px;
+}
+

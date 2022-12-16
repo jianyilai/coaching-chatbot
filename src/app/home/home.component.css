@@ -1,0 +1,11 @@
+iframe {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    display: block;
+    border: none;
+    height: 100%;
+    position: absolute;
+}

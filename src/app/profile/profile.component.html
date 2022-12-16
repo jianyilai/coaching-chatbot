@@ -1,0 +1,65 @@
+<div class="container">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Profile</ion-card-title>
+      <ion-card-subtitle>settings</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-accordion-group>
+        <ion-accordion value="first">
+          <ion-item slot="header" color="light">
+            <ion-label>User Details</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+
+            <p style="padding-left: 18px;">Username: {{ userData.name }}</p>
+            <p style="padding-left: 18px;">Email: {{ userData.email }}</p>
+
+          </div>
+        </ion-accordion>
+        <ion-accordion value="second">
+          <ion-item slot="header" color="light">
+            <ion-label>Change Password</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <!-- <form [formGroup]="updatePasswordForm">
+              <ion-label>New Password:</ion-label>
+              <ion-input type="text" placeholder="Enter your new password" formControlName="password"></ion-input>
+            </form> -->
+            <ion-item>
+              <ion-label>New Password:</ion-label>
+              <form [formGroup]="updatePasswordForm">
+                <ion-input data-type="password" id="password" type="password" placeholder="Enter your new password"
+                  formControlName="password"></ion-input>
+              </form>
+            </ion-item>
+            <ion-item>
+              <ion-button (click)="onUpdatePass()" fill="clear"
+                style="background-color:rgb(0, 237, 59); color: #fff; border-radius: 5px;">Save
+                Changes</ion-button>
+            </ion-item>
+          </div>
+        </ion-accordion>
+        <ion-accordion value="third">
+          <ion-item slot="header" color="light">
+            <ion-label>Change Email Address</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-item>
+              <ion-label>New Email:</ion-label>
+              <form [formGroup]="updateEmailForm">
+                <ion-input data-type="email" id="email" type="email" placeholder="Enter your new email"
+                  formControlName="email"></ion-input>
+              </form>
+            </ion-item>
+            <ion-item>
+              <ion-button (click)="onUpdateEmail()" fill="clear"
+                style="background-color:rgb(0, 237, 59); color: #fff; border-radius: 5px;">Save
+                Changes</ion-button>
+            </ion-item>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card-content>
+  </ion-card>
+</div>
