@@ -11,13 +11,18 @@ import { AuthService } from '../auth.service';
 })
 export class ProfileComponent implements OnInit {
 
-  public userData: any = [];
+  userData: any = [];
   updatePasswordForm!: FormGroup;
+  updateEmailForm!: FormGroup;
 
-  constructor(private authService: AuthService, private userService: UserService, private router: Router, private formBuilder:
+  constructor(private authService: AuthService, private userService: UserService, private router: Router, private fb:
     FormBuilder) {
-    this.updatePasswordForm = this.formBuilder.group({
+    this.updatePasswordForm = this.fb.group({
       password: ['', Validators.required]
+    });
+
+    this.updateEmailForm = this.fb.group({
+      email: ['', Validators.required]
     });
   }
 
@@ -29,9 +34,15 @@ export class ProfileComponent implements OnInit {
   }
 
   onUpdatePass() {
-    this.userService.updatePassword(this.updatePasswordForm.value).subscribe(res => {
+    this.userService.updatePassword(this.updatePasswordForm.value.password).subscribe(res => {
       console.log('Password Changed');
-      location.reload();
+    })
+  }
+
+  onUpdateEmail() {
+    this.userService.updateEmail(this.updateEmailForm.value.email).subscribe(res => {
+      console.log('Email Changed');
+      location.reload()
     })
   }
 

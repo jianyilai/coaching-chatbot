@@ -24,9 +24,16 @@ export class UserService {
   }
 
   updatePassword(password: string) {
-    const userId = this.authService.getUserId
+    const userId = this.authService.getUserId()
     return this.http.put<any[]>(this.usersUrl + "/passwordreset/" + userId, {
       'password': password
+    });
+  }
+
+  updateEmail(email: string) {
+    const userId = this.authService.getUserId()
+    return this.http.put<any[]>(this.usersUrl + "/emailreset/" + userId, {
+      'email': email
     });
   }
 }

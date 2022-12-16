@@ -13,7 +13,7 @@
           <div class="ion-padding" slot="content">
 
             <p style="padding-left: 18px;">Username: {{ userData.name }}</p>
-            <p style="padding-left: 18px;">Email: {{ userData }}</p>
+            <p style="padding-left: 18px;">Email: {{ userData.email }}</p>
 
           </div>
         </ion-accordion>
@@ -29,11 +29,14 @@
             <ion-item>
               <ion-label>New Password:</ion-label>
               <form [formGroup]="updatePasswordForm">
-                <ion-input data-type="password" id="password" type="text" placeholder="Enter your new password" formControlName="password"></ion-input>
+                <ion-input data-type="password" id="password" type="password" placeholder="Enter your new password"
+                  formControlName="password"></ion-input>
               </form>
             </ion-item>
             <ion-item>
-              <ion-button (click)="onUpdatePass()">Submit</ion-button>
+              <ion-button (click)="onUpdatePass()" fill="clear"
+                style="background-color:rgb(0, 237, 59); color: #fff; border-radius: 5px;">Save
+                Changes</ion-button>
             </ion-item>
           </div>
         </ion-accordion>
@@ -43,16 +46,15 @@
           </ion-item>
           <div class="ion-padding" slot="content">
             <ion-item>
-              <ion-label>Enter New Email:</ion-label>
-              <ion-input placeholder="Enter your new email"></ion-input>
-              <ion-button>Send OTP</ion-button>
+              <ion-label>New Email:</ion-label>
+              <form [formGroup]="updateEmailForm">
+                <ion-input data-type="email" id="email" type="email" placeholder="Enter your new email"
+                  formControlName="email"></ion-input>
+              </form>
             </ion-item>
             <ion-item>
-              <ion-label>Enter Verification Code:</ion-label>
-              <ion-input placeholder="Enter OTP"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-button fill="clear" style="background-color:rgb(0, 237, 59); color: #fff; border-radius: 5px;">Save
+              <ion-button (click)="onUpdateEmail()" fill="clear"
+                style="background-color:rgb(0, 237, 59); color: #fff; border-radius: 5px;">Save
                 Changes</ion-button>
             </ion-item>
           </div>

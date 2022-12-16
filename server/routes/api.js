@@ -76,7 +76,6 @@ router.route('/users').get(function (req, res) {
 // get users data by id
 router.route('/users/:_id').get(function (req, res) {
     var userId = req.params._id
-    console.log(userId)
     db.collection('users').findOne({ _id: ObjectId(userId) },
         (err, results) => {
             if (err) return console.log(err);
@@ -93,19 +92,35 @@ router.route('/users/:_id').delete(function (req, res) {
     });
 });
 
-// change password
+//change password
 router.route('/users/passwordreset/:_id').put(function (req, res) {
-    var userId = req.params.userId
-    var username = req.params.username;
-    var email = req.params.email;
     var password = req.body.password;
-    var role = req.params.role;
+    var userId = req.params._id
     bcrypt.hash(password, BCRYPT_SALT_ROUNDS, function (err, hash) {
-        db.collection('users').updateOne({ userId }, { $set: { "password": hash } }, (err, results) => {
-            res.send(results);
+        db.collection('users').updateOne({ _id: ObjectId(userId) }, {
+            $set: { "password": hash }
+        }, (err, result) => {
+            if (err) return console.log(err)
+            console.log(result)
+            console.log('password changed')
+            res.send(result);
         });
     });
 })
+
+//change email
+router.route('/users/emailreset/:_id').put(function (req, res) {
+    var email = req.body.email;
+    var userId = req.params._id
+    db.collection('users').updateOne({ _id: ObjectId(userId) }, {
+        $set: { "email": email }
+    }, (err, result) => {
+        if (err) return console.log(err)
+        console.log(result)
+        console.log('email changed')
+        res.send(result);
+    });
+});
 
 
 //To-Do
@@ -120,11 +135,8 @@ router.route('/tasks').get(function (req, res) {
 
 // retrieve all tasks by userID
 router.route('/tasks/user/:userid').get(function (req, res) {
-    console.log(ObjectId(req.params.userid))
-    //find(userid == "638d997233ae485caa946bff")
-    db.collection('tasks').find({ "userid": req.params.userid }).toArray(function (err, results) {
+    db.collection('tasks').find({ "userId": req.params.userid }).toArray(function (err, results) {
         if (err) return console.log(err);
-        console.log(results);
         res.send(results);
     });
 });
@@ -137,18 +149,27 @@ router.route('/tasks/:_id').get(function (req, res) {
         });
 });
 
-// create new tasks
+// add a task
 router.route('/tasks').post(function (req, res) {
-    db.collection('tasks').insertOne(req.body, (err, results) => {
-        if (err) return console.log(err);
-        console.log('saved to database');
-        res.send(results);
+    var title = req.body.title;
+    var dueBy = req.body.dueBy;
+    var reminder = req.body.reminder;
+    var userId = req.body.userId;
+    db.collection('tasks').insertOne({
+        "userId": userId, "title": title, "dueBy": dueBy,
+        "reminder": reminder
+    }, (err, result) => {
+        if (err) return console.log(err)
+        console.log(result)
+        console.log('task saved to database')
+        res.send(result);
     });
-});
+
+})
 
 // delete task based on id
 router.route('/tasks/:_id').delete(function (req, res) {
-    db.collection('tasks').deleteOne({ "_id": ObjectId(req.params._id) }, (err,
+    db.collection('tasks').deleteOne({ _id: ObjectId(req.params._id) }, (err,
         results) => {
         res.send(results);
     });
@@ -156,10 +177,20 @@ router.route('/tasks/:_id').delete(function (req, res) {
 
 // update task based on id
 router.route('/tasks/:_id').put(function (req, res) {
-    db.collection('tasks').updateOne({ "_id": ObjectId(req.params._id) }, {
-        $set: req.body
-    }, (err, results) => {
-        res.send(results);
+    var taskId = req.params._id
+    var userId = req.body.userId
+    var title = req.body.title
+    var dueBy = req.body.dueBy
+    var reminder = req.body.reminder
+    console.log(req.params)
+    console.log(req.body)
+    db.collection('tasks').updateOne({ _id: ObjectId(taskId) }, {
+        $set: { "userId": userId, "title": title, "dueBy": dueBy, "reminder": reminder }
+    }, (err, result) => {
+        if (err) return console.log(err)
+        console.log(result)
+        console.log('task updated')
+        res.send(result);
     });
 });
 
