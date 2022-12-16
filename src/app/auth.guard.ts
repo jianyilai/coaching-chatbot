@@ -14,9 +14,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean
       | UrlTree> | boolean | UrlTree {
 
-    const permission = route.data["permission"];
-    if (this.authService.isLoggedIn() &&
-      permission.only.includes(this.authService.getUserRole())) {
+    if (this.authService.isLoggedIn()) {
       return true;
     } else {
       console.log("You had been logout, You are not authorized to access the page");

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'app/auth.service';
 import { ToDoService } from 'app/to-do.service';
 
 declare var window: any;
@@ -40,7 +39,7 @@ export class ToDoComponent implements OnInit {
   editForm!: FormGroup;
   addForm!: FormGroup;
 
-  constructor(private toDoService: ToDoService, private authService: AuthService, private fb:
+  constructor(private toDoService: ToDoService, private fb:
     FormBuilder) {
     this.editForm = this.fb.group({
       title: ['', Validators.required],

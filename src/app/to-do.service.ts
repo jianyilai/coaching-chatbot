@@ -24,7 +24,6 @@ export class ToDoService {
 
   getTasksByUID() {
     const userId = this.authService.getUserId()
-    console.log(userId)
     return this.http.get<any[]>(this.tasksUrl + "/user/" + userId);
   }
 

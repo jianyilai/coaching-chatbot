@@ -19,7 +19,6 @@ export class UserService {
 
   getUserByUID() {
     const userId = this.authService.getUserId()
-    console.log(userId)
     return this.http.get<any[]>(this.usersUrl + "/" + userId);
   }
 

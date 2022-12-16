@@ -29,7 +29,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUserByUID().subscribe((data: any) => {
       this.userData = data
-      console.log(this.userData)
     });
   }
 
@@ -45,10 +44,4 @@ export class ProfileComponent implements OnInit {
       location.reload()
     })
   }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigateByUrl('/login');
-  };
-
 }

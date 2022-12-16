@@ -39,7 +39,11 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return this.getSecureToken() !== null;
+    if ("LoggedIn" in sessionStorage) {
+      return true
+    } else {
+      return false
+    }
   }
 
   //decode the JWT token to for user's role
@@ -51,7 +55,6 @@ export class AuthService {
   //decode the JWT token for userId
   getUserId() {
     var token = this.getSecureToken();
-    console.log(this.helper.decodeToken(token).userId)
     return this.helper.decodeToken(token).userId
   }
 
