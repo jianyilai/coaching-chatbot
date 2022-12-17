@@ -15,8 +15,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 ## Roadmap
 
 - [x] Chatbot Implementation
-- [ ] User Authentication using JWT
-- [ ] CRUD for To-Do List
-- [ ] CRUD for Users
-- [ ] CRUD for Reminders
+- [x] User Authentication using JWT
+- [x] CRUD for To-Do List
+- [x] CRUD for Users
 - [ ] Reminder Notification
