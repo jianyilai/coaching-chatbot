@@ -7,12 +7,12 @@
       <ion-item>
         <ion-grid>
           <ion-row>
-            <ion-col size="4">
+            <ion-col col-2>
               <ion-card-subtitle class="headerRow">
                 Tasks:
               </ion-card-subtitle>
             </ion-col>
-            <ion-col size="4">
+            <ion-col col-2>
               <ion-card-subtitle>
                 Deadline:
               </ion-card-subtitle>
@@ -33,12 +33,12 @@
             <ion-item>
               <ion-grid>
                 <ion-row class="ion-align-items-start">
-                  <ion-col size="auto">
+                  <ion-col col-2>
                     <ion-label>
                       {{ toDo.title }}
                     </ion-label>
                   </ion-col>
-                  <ion-col size="4">
+                  <ion-col col-2>
                     <ion-label>
                       {{ toDo.dueBy | date: 'dd/MM/yyyy' }}
                     </ion-label>
