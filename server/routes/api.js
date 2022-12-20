@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
+const functions = require('firebase-functions');
 
 const jwt = require("jsonwebtoken");
+const server = require('./server');
 
 const bcrypt = require('bcryptjs');
 const BCRYPT_SALT_ROUNDS = 12;
@@ -284,4 +286,4 @@ router.route('/notifications/:_id').put(function (req, res) {
     });
 });
 
-module.exports = router;
+exports.router = functions.https.onRequest(server);
