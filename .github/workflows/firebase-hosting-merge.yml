@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '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'
+          repoToken: '${{secrets.GITHUB_TOKEN}}'
           firebaseServiceAccount: 'firebase-adminsdk-funl4@coaching-bot-app.iam.gserviceaccount.com'
           channelId: live
           projectId: coaching-bot-app
