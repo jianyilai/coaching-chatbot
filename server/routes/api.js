@@ -37,7 +37,7 @@ date.setMinutes(date.getMinutes() - offset + 480);  // Singapore TImezone is 8 h
 const currentDate = date.toISOString().substr(0, 10);
 
 // code to fetch email notification schedules and send emails using Nodemailer
-cron.schedule('* * * * *', async () => {  // run the script every minute
+cron.schedule('* */12 * * *', async () => {  // run the script every minute
     console.log('cron job is running')
     // query the database for email notification schedules that are due to be sent
     const schedules = await db.collection("notifications").find({ scheduledTime: { $lte: currentDate } }).toArray();
