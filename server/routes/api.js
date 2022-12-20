@@ -8,6 +8,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const BCRYPT_SALT_ROUNDS = 12;
 
+const cron = require('node-cron');
+const nodemailer = require('nodemailer');
+
 var db;
 const url = 'mongodb+srv://testuser:testpass@cluster0.wtnbhkz.mongodb.net/?retryWrites=true&w=majority';
 
@@ -17,6 +20,42 @@ MongoClient.connect(url, {
 }, (err, database) => {
     if (err) return console.log(err);
     db = database.db('coaching-chatbot');
+});
+
+// create an email transport object
+const transporter = nodemailer.createTransport({
+    service: 'Zoho',
+    auth: {
+        user: 'workio.app2@zohomail.com',
+        pass: '!_Le7M.rjL5uqTJ'
+    }
+});
+
+const date = new Date();
+const offset = date.getTimezoneOffset();
+date.setMinutes(date.getMinutes() - offset + 480);  // Singapore TImezone is 8 hours behind
+const currentDate = date.toISOString().substr(0, 10);
+
+// code to fetch email notification schedules and send emails using Nodemailer
+cron.schedule('* * * * *', async () => {  // run the script every minute
+    console.log('cron job is running')
+    // query the database for email notification schedules that are due to be sent
+    const schedules = await db.collection("notifications").find({ scheduledTime: { $lte: currentDate } }).toArray();
+    // send emails using Nodemailer
+    schedules.forEach(async (schedule) => {
+        transporter.sendMail({
+            from: 'workio.app2@zohomail.com',
+            to: schedule.email,
+            subject: 'You got a reminder from Workio',
+            text: schedule.message
+        }, async (error, info) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    });
 });
 
 //Authentication
