@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Timestamp } from 'rxjs';
+import { map } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -29,7 +29,9 @@ export class ToDoService {
 
   insertTask(title: string, dueBy: Date, reminder: boolean) {
     const userId = this.authService.getUserId()
-    return this.http.post<any[]>(this.tasksUrl, { userId, 'title': title, 'dueBy': dueBy, 'reminder': reminder });
+    return this.http.post<{ insertedId: string }>(this.tasksUrl, { userId, 'title': title, 'dueBy': dueBy, 'reminder': reminder }).pipe(
+      map(response => response.insertedId)
+    );
   }
 
   deleteTask(_id: string) {
