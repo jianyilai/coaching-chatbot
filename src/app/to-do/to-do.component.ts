@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from 'app/notification.service';
 import { ToDoService } from 'app/to-do.service';
 
 declare var window: any;
@@ -12,20 +13,7 @@ declare var window: any;
 export class ToDoComponent implements OnInit {
 
   toDoList: any = []
-  // {
-  //   "_id": "6395f60f001ca37999d65b5d",
-  //   "userid": "638d997233ae485caa946bff",
-  //   "title": "Remember to do this job iomporatnta!!",
-  //   "dueBy": "25-11-2023"
-  // },
-  // {
-  //   "_id": "234267563453564734",
-  //   "userid": "638d9972353476357343ae485caa946bff",
-  //   "title": "fries",
-  //   "dueBy": "25-11-2043"
-  // }
 
-  // selectedRowData = null;
   selectedTaskData = {
     _id: "",
     userId: "",
@@ -34,23 +22,32 @@ export class ToDoComponent implements OnInit {
     reminder: ""
   };
 
+  selectedTaskNotifData = {
+    _id: "",
+    taskId: "",
+    email: "",
+    message: "",
+    scheduledTime: ""
+  };
+
+
   editFormModal: any;
   addFormModal: any;
   editForm!: FormGroup;
   addForm!: FormGroup;
 
-  constructor(private toDoService: ToDoService, private fb:
+  constructor(private toDoService: ToDoService, private notificationService: NotificationService, private fb:
     FormBuilder) {
     this.editForm = this.fb.group({
       title: ['', Validators.required],
       dueBy: ['', Validators.required],
-      reminder: [null, Validators.required]
+      reminder: [false, Validators.required]
     });
 
     this.addForm = this.fb.group({
       title: ['', Validators.required],
       dueBy: ['', Validators.required],
-      reminder: [null, Validators.required]
+      reminder: [false, Validators.required]
     });
   }
 
@@ -81,25 +78,82 @@ export class ToDoComponent implements OnInit {
     this.addFormModal.show();
   }
 
-  saveEditForm(_id: string) {
-    this.toDoService.updateTask(_id, this.editForm.value.title, this.editForm.value.dueBy, this.editForm.value.reminder).subscribe();
-    location.reload()
+  saveEditForm(taskId: string) {
+    // get notification by taskId
+    this.notificationService.getNotificationByTaskId(taskId).subscribe((data: any) => {
+      this.selectedTaskNotifData = data
+
+      // check if updated task have reminder true or false
+      if (this.editForm.value.reminder == true) {
+        //Update Task
+        this.toDoService.updateTask(taskId, this.editForm.value.title, this.editForm.value.dueBy, this.editForm.value.reminder).subscribe();
+        console.log(!this.selectedTaskNotifData)
+        // check if this task have an existing notification
+        if (!this.selectedTaskNotifData) {
+          console.log('this task does not have a notification')
+          this.notificationService.insertNotification(taskId, this.editForm.value.title, this.editForm.value.dueBy).subscribe();
+          console.log('notification added')
+          location.reload()
+        } else {
+          console.log('This task have a notification')
+          // check if the title is changed
+          if (this.selectedTaskNotifData.message == this.editForm.value.title && this.selectedTaskNotifData.scheduledTime == this.editForm.value.dueBy) {
+            console.log('No changes to notification')
+            location.reload()
+          } else {
+            this.notificationService.updateNotification(this.selectedTaskNotifData._id, taskId, this.editForm.value.title, this.editForm.value.dueBy).subscribe();
+            console.log('Notification Updated')
+            location.reload()
+          }
+        }
+      } else {
+        //Update Task
+        this.toDoService.updateTask(taskId, this.editForm.value.title, this.editForm.value.dueBy, this.editForm.value.reminder).subscribe();
+        // check if this task have an existing notification
+        if (this.selectedTaskNotifData._id !== "") {
+          console.log('This task have a notification')
+          // remove notification
+          this.notificationService.deleteNotification(this.selectedTaskNotifData._id).subscribe();
+          console.log('notification removed')
+          location.reload()
+        } else {
+          console.log('no notification needed')
+          location.reload()
+        }
+      }
+    });
     this.editFormModal.hide();
     console.log('task updated')
   }
 
   saveAddForm() {
-    this.toDoService.insertTask(this.addForm.value.title, this.addForm.value.dueBy, this.addForm.value.reminder).subscribe();
-    location.reload()
+    this.toDoService.insertTask(this.addForm.value.title, this.addForm.value.dueBy, this.addForm.value.reminder).subscribe(insertedId => {
+      console.log(insertedId);  // insertedId is the ObjectId of the inserted task
+      if (this.addForm.value.reminder == true) {
+        this.notificationService.insertNotification(insertedId, this.addForm.value.title, this.addForm.value.dueBy).subscribe();
+        location.reload()
+        console.log('reminder added')
+      } else {
+        location.reload()
+      }
+    });
     this.addFormModal.hide();
     console.log('task added')
-
   }
 
   //delete selected task
   deleteTask(_id: string) {
     this.toDoService.deleteTask(_id).subscribe();
-    location.reload()
+    // get notification by taskId
+    this.notificationService.getNotificationByTaskId(_id).subscribe((data: any) => {
+      this.selectedTaskNotifData = data
+      if (!this.selectedTaskNotifData) {
+        location.reload()
+      }
+      else {
+        this.notificationService.deleteNotification(this.selectedTaskNotifData._id).subscribe();
+        location.reload()
+      }
+    });
   }
-
 }

@@ -10,7 +10,7 @@
       }
     ],
     "no-inline-styles": "off",
-    "compat-api/css": "off
+    "compat-api/css": "off"
   },
   "browserslist": [
     "defaults",

@@ -8,16 +8,54 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const BCRYPT_SALT_ROUNDS = 12;
 
-// declare axios for making http requests
-const axios = require('axios');
-var db;
+const cron = require('node-cron');
+const nodemailer = require('nodemailer');
 
-MongoClient.connect('mongodb+srv://testuser:testpass@cluster0.wtnbhkz.mongodb.net/?retryWrites=true&w=majority', {
+var db;
+const url = 'mongodb+srv://testuser:testpass@cluster0.wtnbhkz.mongodb.net/?retryWrites=true&w=majority';
+
+MongoClient.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }, (err, database) => {
     if (err) return console.log(err);
     db = database.db('coaching-chatbot');
+});
+
+// create an email transport object
+const transporter = nodemailer.createTransport({
+    service: 'Zoho',
+    auth: {
+        user: 'workio.app2@zohomail.com',
+        pass: '!_Le7M.rjL5uqTJ'
+    }
+});
+
+const date = new Date();
+const offset = date.getTimezoneOffset();
+date.setMinutes(date.getMinutes() - offset + 480);  // Singapore TImezone is 8 hours behind
+const currentDate = date.toISOString().substr(0, 10);
+
+// code to fetch email notification schedules and send emails using Nodemailer
+cron.schedule('* * * * *', async () => {  // run the script every minute
+    console.log('cron job is running')
+    // query the database for email notification schedules that are due to be sent
+    const schedules = await db.collection("notifications").find({ scheduledTime: { $lte: currentDate } }).toArray();
+    // send emails using Nodemailer
+    schedules.forEach(async (schedule) => {
+        transporter.sendMail({
+            from: 'workio.app2@zohomail.com',
+            to: schedule.email,
+            subject: 'You got a reminder from Workio',
+            text: schedule.message
+        }, async (error, info) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    });
 });
 
 //Authentication
@@ -149,23 +187,14 @@ router.route('/tasks/:_id').get(function (req, res) {
         });
 });
 
-// add a task
-router.route('/tasks').post(function (req, res) {
+router.route('/tasks').post(async (req, res) => {
     var title = req.body.title;
     var dueBy = req.body.dueBy;
     var reminder = req.body.reminder;
     var userId = req.body.userId;
-    db.collection('tasks').insertOne({
-        "userId": userId, "title": title, "dueBy": dueBy,
-        "reminder": reminder
-    }, (err, result) => {
-        if (err) return console.log(err)
-        console.log(result)
-        console.log('task saved to database')
-        res.send(result);
-    });
-
-})
+    const result = await db.collection('tasks').insertOne({ userId, title, dueBy, reminder });
+    res.send({ insertedId: result.insertedId });
+});
 
 // delete task based on id
 router.route('/tasks/:_id').delete(function (req, res) {
@@ -190,25 +219,69 @@ router.route('/tasks/:_id').put(function (req, res) {
         if (err) return console.log(err)
         console.log(result)
         console.log('task updated')
-        res.send(result);
+        res.send({ insertedId: result.insertedId });
     });
 });
 
-function verifyToken(req, res, next) {
-    if (!req.headers.authorization) {
-        return res.status(401).send("Unauthorized request");
-    }
-    let token = req.headers.authorization.split(" ")[1];
-    if (token === "null") {
-        return res.status(401).send("Unauthorized request");
-    }
-    let payload = jwt.verify(token, "secretkey");
-    if (!payload) {
-        return res.status(401).send("Unauthorized request");
-    }
-    req.userId = payload.userId;
+//Notfication
+// retrieve all noti
+router.route('/notifications').get(function (req, res) {
+    db.collection('notifications').find().toArray(function (err, results) {
+        if (err) return console.log(err);
+        console.log(results);
+        res.send(results);
+    });
+});
 
-    next();
-}
+// get notfication by taskId
+router.route('/notifications/task/:taskId').get(function (req, res) {
+    db.collection('notifications').findOne({ "taskId": req.params.taskId }, (err, results) => {
+        if (err) return console.log(err);
+        res.send(results);
+    });
+});
+
+// add a notification
+router.route('/notifications').post(function (req, res) {
+    var taskId = req.body.taskId;
+    var email = req.body.email;
+    var message = req.body.message;
+    var scheduledTime = req.body.scheduledTime
+    db.collection('notifications').insertOne({
+        "taskId": taskId, "email": email, "message": message, "scheduledTime": scheduledTime
+    }, (err, result) => {
+        if (err) return console.log(err)
+        console.log(result)
+        console.log('notification saved to database')
+        res.send(result);
+    });
+})
+
+// delete noti based on id
+router.route('/notifications/:_id').delete(function (req, res) {
+    db.collection('notifications').deleteOne({ _id: ObjectId(req.params._id) }, (err,
+        results) => {
+        if (err) return console.log(err)
+        res.send(results);
+    });
+});
+
+// update notif based on id
+router.route('/notifications/:_id').put(function (req, res) {
+    var taskId = req.body.taskId;
+    var email = req.body.email;
+    var message = req.body.message;
+    var scheduledTime = req.body.scheduledTime
+    console.log(req.params + 'notif params')
+    console.log(req.body + 'notif body')
+    db.collection('notifications').updateOne({ _id: ObjectId(req.params._id) }, {
+        $set: { "taskId": taskId, "email": email, "message": message, "scheduledTime": scheduledTime }
+    }, (err, result) => {
+        if (err) return console.log(err)
+        console.log(result)
+        console.log('notification updated')
+        res.send(result);
+    });
+});
 
 module.exports = router;
