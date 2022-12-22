@@ -36,7 +36,7 @@ const offset = date.getTimezoneOffset();
 date.setMinutes(date.getMinutes() - offset + 480);  // Singapore TImezone is 8 hours behind
 const currentDate = date.toISOString().substr(0, 10);
 
-cron.schedule('* * * * *', async () => {  // run cron job every 12 hr
+cron.schedule('* */1 * * *', async () => {  // run cron job every hour (can be changed)
     console.log('cron job is running')
     // query the database for email notification schedules that are due to be sent
     const schedules = await db.collection("notifications").find({ scheduledTime: { $lte: currentDate } }).toArray();
@@ -58,7 +58,7 @@ cron.schedule('* * * * *', async () => {  // run cron job every 12 hr
                 });
                 db.collection('tasks').deleteOne({ _id: ObjectId(schedule.taskId) }, (err,
                     results) => {
-                    res.send(results);
+                    if (err) return console.log(err)
                 });
                 console.log("notification removed from database")
             }
