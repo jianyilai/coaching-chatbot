@@ -55,9 +55,8 @@ cron.schedule('* * * * *', async () => {  // run cron job every 12 hr
                 db.collection('notifications').deleteOne({ _id: ObjectId(schedule._id) }, (err,
                     results) => {
                     if (err) return console.log(err)
-                    res.send(results);
-                    console.log("notification sent")
                 });
+                console.log("notification removed from database")
             }
         });
     });
