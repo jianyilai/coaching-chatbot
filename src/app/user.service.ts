@@ -7,31 +7,27 @@ import { AuthService } from './auth.service';
 })
 export class UserService {
 
-  usersUrl: string;
-
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.usersUrl = "http://localhost:3000/api/users";
-  }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getAllUsers() {
-    return this.http.get<any[]>(this.usersUrl);
+    return this.http.get<any[]>("https://coaching-bot-app.cloudfunctions.net/getAllUsers");
   }
 
   getUserByUID() {
     const userId = this.authService.getUserId()
-    return this.http.get<any[]>(this.usersUrl + "/" + userId);
+    return this.http.get<any[]>("https://coaching-bot-app.cloudfunctions.net/users" + "?userId=" + userId);
   }
 
   updatePassword(password: string) {
     const userId = this.authService.getUserId()
-    return this.http.put<any[]>(this.usersUrl + "/passwordreset/" + userId, {
+    return this.http.put<any[]>("https://coaching-bot-app.cloudfunctions.net/changePassword" + "?userId=" + userId, {
       'password': password
     });
   }
 
   updateEmail(email: string) {
     const userId = this.authService.getUserId()
-    return this.http.put<any[]>(this.usersUrl + "/emailreset/" + userId, {
+    return this.http.put<any[]>("https://coaching-bot-app.cloudfunctions.net/changeEmail" + "?userId=" + userId, {
       'email': email
     });
   }

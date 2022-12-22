@@ -8,39 +8,35 @@ import { AuthService } from './auth.service';
 })
 export class ToDoService {
 
-  tasksUrl: string;
-
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.tasksUrl = "http://localhost:3000/api/tasks";
-  }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getAllTasks() {
-    return this.http.get<any[]>(this.tasksUrl);
+    return this.http.get<any[]>("https://coaching-bot-app.cloudfunctions.net/getAllTasks");
   }
 
   getTaskById(_id: string) {
-    return this.http.get<any[]>(this.tasksUrl + "/" + _id);
+    return this.http.get<any[]>("https://coaching-bot-app.cloudfunctions.net/getTaskById" + "?_id==" + _id);
   }
 
   getTasksByUID() {
     const userId = this.authService.getUserId()
-    return this.http.get<any[]>(this.tasksUrl + "/user/" + userId);
+    return this.http.get<any[]>("https://coaching-bot-app.cloudfunctions.net/getTaskByUserId" + "?userId=" + userId);
   }
 
   insertTask(title: string, dueBy: Date, reminder: boolean) {
     const userId = this.authService.getUserId()
-    return this.http.post<{ insertedId: string }>(this.tasksUrl, { userId, 'title': title, 'dueBy': dueBy, 'reminder': reminder }).pipe(
+    return this.http.post<{ insertedId: string }>("https://coaching-bot-app.cloudfunctions.net/createTask", { userId, 'title': title, 'dueBy': dueBy, 'reminder': reminder }).pipe(
       map(response => response.insertedId)
     );
   }
 
   deleteTask(_id: string) {
-    return this.http.delete<any[]>(this.tasksUrl + "/" + _id);
+    return this.http.delete<any[]>("https://coaching-bot-app.cloudfunctions.net/deleteTask" + "?_id=" + _id);
   }
 
   updateTask(_id: string, title: string, dueBy: Date, reminder: boolean) {
     const userId = this.authService.getUserId()
-    return this.http.put<any[]>(this.tasksUrl + "/" + _id, {
+    return this.http.put<any[]>("https://coaching-bot-app.cloudfunctions.net/updateTask" + "?_id=" + _id, {
       userId, 'title': title, 'dueBy': dueBy, 'reminder': reminder
     });
   }

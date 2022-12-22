@@ -7,36 +7,28 @@ import { AuthService } from './auth.service';
 })
 export class NotificationService {
 
-  notificationsUrl: string;
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.notificationsUrl = "http://localhost:3000/api/notifications";
+  getAllNotifications() {
+    return this.http.get<any[]>("https://coaching-bot-app.cloudfunctions.net/getAllNotifications");
   }
-
-  getAllTasks() {
-    return this.http.get<any[]>(this.notificationsUrl);
-  }
-
-  // getTaskById(_id: string) {
-  //   return this.http.get<any[]>(this.notificationsUrl + "/" + _id);
-  // }
 
   getNotificationByTaskId(taskId: string) {
-    return this.http.get<any[]>(this.notificationsUrl + "/task/" + taskId);
+    return this.http.get<any[]>("https://coaching-bot-app.cloudfunctions.net/getNotificationsByTaskId" + "?taskId=" + taskId);
   }
 
   insertNotification(taskId: string, message: string, scheduledTime: Date) {
     const email = this.authService.getUserEmail()
-    return this.http.post<any[]>(this.notificationsUrl, { 'taskId': taskId, email, 'message': message, 'scheduledTime': scheduledTime });
+    return this.http.post<any[]>("https://coaching-bot-app.cloudfunctions.net/createNotification", { 'taskId': taskId, email, 'message': message, 'scheduledTime': scheduledTime });
   }
 
   deleteNotification(_id: string) {
-    return this.http.delete<any[]>(this.notificationsUrl + "/" + _id);
+    return this.http.delete<any[]>("https://coaching-bot-app.cloudfunctions.net/deleteNotification" + "?_id" + _id);
   }
 
   updateNotification(_id: string, taskId: string, message: string, scheduledTime: Date) {
     const email = this.authService.getUserEmail()
-    return this.http.put<any[]>(this.notificationsUrl + "/" + _id,
+    return this.http.put<any[]>("https://coaching-bot-app.cloudfunctions.net/updateNotification" + "?_id" + _id,
       { 'taskId': taskId, email, 'message': message, 'scheduledTime': scheduledTime });
   }
 }

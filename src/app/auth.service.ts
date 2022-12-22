@@ -7,23 +7,19 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
 
-  regUserUrl: string = "http://localhost:3000/api/reguser/";
-  authuser: string = "http://localhost:3000/api/authuser/";
-
-
   helper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
 
   regUser(username: string, email: string, pw: string, role: string) {
-    return this.http.post<any[]>(this.regUserUrl, {
+    return this.http.post<any[]>('https://coaching-bot-app.cloudfunctions.net/reguser', {
       'username': username,
       'email': email,
       'password': pw, 'role': role
     });
   }
   authUser(username: string, pw: string) {
-    return this.http.post<any[]>(this.authuser, {
+    return this.http.post<any[]>('https://coaching-bot-app.cloudfunctions.net/authuser', {
       'username': username,
       'password': pw
     });
