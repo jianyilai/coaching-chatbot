@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
-const serverless = require("serverless-http");
-const app = express();
 
 const jwt = require("jsonwebtoken");
 
@@ -12,8 +10,6 @@ const BCRYPT_SALT_ROUNDS = 12;
 
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
-
-app.use(`/.netlify/functions/api`, router);
 
 var db;
 const url = 'mongodb+srv://testuser:testpass@cluster0.wtnbhkz.mongodb.net/?retryWrites=true&w=majority';
@@ -40,8 +36,7 @@ const offset = date.getTimezoneOffset();
 date.setMinutes(date.getMinutes() - offset + 480);  // Singapore TImezone is 8 hours behind
 const currentDate = date.toISOString().substr(0, 10);
 
-// code to fetch email notification schedules and send emails using Nodemailer
-cron.schedule('* */12 * * *', async () => {  // run the script every minute
+cron.schedule('* */12 * * *', async () => {  // run cron job every 12 hr
     console.log('cron job is running')
     // query the database for email notification schedules that are due to be sent
     const schedules = await db.collection("notifications").find({ scheduledTime: { $lte: currentDate } }).toArray();
@@ -288,5 +283,4 @@ router.route('/notifications/:_id').put(function (req, res) {
     });
 });
 
-module.exports = app;
-module.exports.handler = serverless(app);
+module.exports = router;
