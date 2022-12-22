@@ -35,20 +35,14 @@ export class ProfileComponent implements OnInit {
   onUpdatePass() {
     this.userService.updatePassword(this.updatePasswordForm.value.password).subscribe(res => {
       console.log('Password Changed');
-      this.router.navigate(['/profile'])
-        .then(() => {
-          window.location.reload();
-        });
+      location.reload()
     })
   }
 
   onUpdateEmail() {
     this.userService.updateEmail(this.updateEmailForm.value.email).subscribe(res => {
       console.log('Email Changed');
-      this.router.navigate(['/profile'])
-        .then(() => {
-          window.location.reload();
-        });
+      location.reload()
     })
   }
 }

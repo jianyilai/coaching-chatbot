@@ -42,7 +42,7 @@ export class ToDoComponent implements OnInit {
     this.editForm = this.fb.group({
       title: ['', Validators.required],
       dueBy: ['', Validators.required],
-      reminder: [false, Validators.required]
+      reminder: ['', Validators.required]
     });
 
     this.addForm = this.fb.group({
@@ -94,26 +94,17 @@ export class ToDoComponent implements OnInit {
           console.log('this task does not have a notification')
           this.notificationService.insertNotification(taskId, this.editForm.value.title, this.editForm.value.dueBy).subscribe();
           console.log('notification added')
-          this.router.navigate(['/to-do'])
-            .then(() => {
-              window.location.reload();
-            });
+          location.reload()
         } else {
           console.log('This task have a notification')
-          // check if the title is changed
+          // check if the title or date is changed
           if (this.selectedTaskNotifData.message == this.editForm.value.title && this.selectedTaskNotifData.scheduledTime == this.editForm.value.dueBy) {
             console.log('No changes to notification')
-            this.router.navigate(['/to-do'])
-              .then(() => {
-                window.location.reload();
-              });
+            location.reload()
           } else {
             this.notificationService.updateNotification(this.selectedTaskNotifData._id, taskId, this.editForm.value.title, this.editForm.value.dueBy).subscribe();
             console.log('Notification Updated')
-            this.router.navigate(['/to-do'])
-              .then(() => {
-                window.location.reload();
-              });
+            location.reload()
           }
         }
       } else {
@@ -125,16 +116,10 @@ export class ToDoComponent implements OnInit {
           // remove notification
           this.notificationService.deleteNotification(this.selectedTaskNotifData._id).subscribe();
           console.log('notification removed')
-          this.router.navigate(['/to-do'])
-            .then(() => {
-              window.location.reload();
-            });
+          location.reload()
         } else {
           console.log('no notification needed')
-          this.router.navigate(['/to-do'])
-            .then(() => {
-              window.location.reload();
-            });
+          location.reload()
         }
       }
     });
@@ -147,16 +132,10 @@ export class ToDoComponent implements OnInit {
       console.log(insertedId);  // insertedId is the ObjectId of the inserted task
       if (this.addForm.value.reminder == true) {
         this.notificationService.insertNotification(insertedId, this.addForm.value.title, this.addForm.value.dueBy).subscribe();
-        this.router.navigate(['/to-do'])
-          .then(() => {
-            window.location.reload();
-          });
+        location.reload()
         console.log('reminder added')
       } else {
-        this.router.navigate(['/to-do'])
-          .then(() => {
-            window.location.reload();
-          });
+        location.reload()
       }
     });
     this.addFormModal.hide();
@@ -170,17 +149,11 @@ export class ToDoComponent implements OnInit {
     this.notificationService.getNotificationByTaskId(_id).subscribe((data: any) => {
       this.selectedTaskNotifData = data
       if (!this.selectedTaskNotifData) {
-        this.router.navigate(['/to-do'])
-          .then(() => {
-            window.location.reload();
-          });
+        location.reload()
       }
       else {
         this.notificationService.deleteNotification(this.selectedTaskNotifData._id).subscribe();
-        this.router.navigate(['/to-do'])
-          .then(() => {
-            window.location.reload();
-          });
+        location.reload()
       }
     });
   }

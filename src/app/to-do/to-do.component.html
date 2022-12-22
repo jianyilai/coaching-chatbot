@@ -2,8 +2,9 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>To Do List: </ion-card-title>
-      <div class="button-container"><ion-button (click)="openAddFormModal()">Add new task</ion-button></div>
       <br>
+      <p><em>Swipe to the right <b>&rarr;</b> to Edit and Swipe to the left <b>&larr;</b> to Delete</em></p>
+      <div class="button-container"><ion-button (click)="openAddFormModal()">Add new task</ion-button></div>
       <ion-item>
         <ion-grid>
           <ion-row>
@@ -45,7 +46,6 @@
                   </ion-col>
                 </ion-row>
               </ion-grid>
-              <ion-checkbox></ion-checkbox>
             </ion-item>
             <ion-item-options side="end">
               <ion-item-option color="danger" expandable (click)="deleteTask(toDo._id)">
