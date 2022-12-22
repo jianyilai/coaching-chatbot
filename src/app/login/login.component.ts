@@ -15,7 +15,12 @@ export class LoginComponent implements OnInit {
   authForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private authService: AuthService,
-    private router: Router) { }
+    private router: Router) {
+      if (this.authService.isLoggedIn()) {
+        // redirect to profile page if already logged in
+        this.router.navigateByUrl('/profile');
+      }
+    }
 
   ngOnInit() {
     this.authForm = this.fb.group({
@@ -36,8 +41,7 @@ export class LoginComponent implements OnInit {
         this.results = data;
         if (this.results[0].auth) {
           this.authService.loggedIn(this.results[0].token);
-          this.router.navigateByUrl('/');
-          setTimeout(location.reload.bind(location), 2000);
+          location.reload()
         } else {
           console.log("Wrong username or password")
         }
