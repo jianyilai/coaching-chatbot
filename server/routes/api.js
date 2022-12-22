@@ -56,6 +56,10 @@ cron.schedule('* * * * *', async () => {  // run cron job every 12 hr
                     results) => {
                     if (err) return console.log(err)
                 });
+                db.collection('tasks').deleteOne({ _id: ObjectId(schedule.taskId) }, (err,
+                    results) => {
+                    res.send(results);
+                });
                 console.log("notification removed from database")
             }
         });
