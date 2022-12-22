@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit {
   onUpdatePass() {
     this.userService.updatePassword(this.updatePasswordForm.value.password).subscribe(res => {
       console.log('Password Changed');
+      location.reload()
     })
   }
 

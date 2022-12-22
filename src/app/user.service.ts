@@ -17,19 +17,19 @@ export class UserService {
 
   getUserByUID() {
     const userId = this.authService.getUserId()
-    return this.http.get<any[]>(this.usersUrl + "+" + userId);
+    return this.http.get<any[]>(this.usersUrl + "/" + userId);
   }
 
   updatePassword(password: string) {
     const userId = this.authService.getUserId()
-    return this.http.put<any[]>(this.usersUrl + "/" + userId, {
+    return this.http.put<any[]>(this.usersUrl + "/passwordreset/" + userId, {
       'password': password
     });
   }
 
   updateEmail(email: string) {
     const userId = this.authService.getUserId()
-    return this.http.put<any[]>(this.usersUrl + "/" + userId, {
+    return this.http.put<any[]>(this.usersUrl + "/emailreset/" + userId, {
       'email': email
     });
   }

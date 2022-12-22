@@ -22,7 +22,7 @@ export class ToDoService {
 
   getTasksByUID() {
     const userId = this.authService.getUserId()
-    return this.http.get<any[]>(this.tasksUrl + "/" + userId);
+    return this.http.get<any[]>(this.tasksUrl + "/user/" + userId);
   }
 
   insertTask(title: string, dueBy: Date, reminder: boolean) {

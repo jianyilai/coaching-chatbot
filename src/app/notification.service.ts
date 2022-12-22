@@ -16,7 +16,7 @@ export class NotificationService {
   }
 
   getNotificationByTaskId(taskId: string) {
-    return this.http.get<any[]>(this.notificationsUrl + "/" + taskId);
+    return this.http.get<any[]>(this.notificationsUrl + "/task/" + taskId);
   }
 
   insertNotification(taskId: string, message: string, scheduledTime: Date) {
