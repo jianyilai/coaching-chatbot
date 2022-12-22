@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
+const serverless = require("serverless-http");
+const app = express();
 
 const jwt = require("jsonwebtoken");
 
@@ -10,6 +12,8 @@ const BCRYPT_SALT_ROUNDS = 12;
 
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
+
+app.use(`/.netlify/functions/api`, router);
 
 var db;
 const url = 'mongodb+srv://testuser:testpass@cluster0.wtnbhkz.mongodb.net/?retryWrites=true&w=majority';
@@ -284,4 +288,5 @@ router.route('/notifications/:_id').put(function (req, res) {
     });
 });
 
-module.exports = router;
+module.exports = app;
+module.exports.handler = serverless(app);

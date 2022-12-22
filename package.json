@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "NODE_ENV=development ./node_modules/.bin/netlify-lambda serve src",
+    "build": "NODE_ENV=production ./node_modules/.bin/netlify-lambda build src",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -28,9 +28,11 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.12.0",
+    "netlify-lambda": "^1.4.3",
     "node-cron": "^3.0.2",
     "nodemailer": "^6.8.0",
     "rxjs": "~7.5.0",
+    "serverless-http": "^1.9.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
