@@ -18,4 +18,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 - [x] User Authentication using JWT
 - [x] CRUD for To-Do List
 - [x] CRUD for Users
-- [ ] Reminder Notification
+- [x] Reminder Email Notification
+- [x] Front-end Hosting on Github Pages
+- [ ] Back-end Hosting
