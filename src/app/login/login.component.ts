@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
         this.results = data;
         if (this.results[0].auth) {
           this.authService.loggedIn(this.results[0].token);
-          this.router.navigate(['/profile'])
+          this.router.navigate(['/'])
             .then(() => {
               window.location.reload();
             });
