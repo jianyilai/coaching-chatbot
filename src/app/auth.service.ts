@@ -11,8 +11,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  reguserUrl: string = "http://localhost:3000/api/reguser"
-  authuserUrl: string = "http://localhost:3000/api/authuser"
+  reguserUrl: string = "https://coaching-chatbot-production.up.railway.app/api/reguser"
+  authuserUrl: string = "https://coaching-chatbot-production.up.railway.app/api/authuser"
 
   regUser(username: string, email: string, pw: string, role: string) {
     return this.http.post<any[]>(this.reguserUrl, {

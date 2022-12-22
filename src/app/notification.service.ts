@@ -9,7 +9,7 @@ export class NotificationService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  notificationsUrl: string = "http://localhost:3000/api/notifications"
+  notificationsUrl: string = "https://coaching-chatbot-production.up.railway.app/api/notifications"
 
   getAllNotifications() {
     return this.http.get<any[]>(this.notificationsUrl);

@@ -9,7 +9,7 @@ export class UserService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  usersUrl: string = 'http://localhost:3000/api/users'
+  usersUrl: string = 'https://coaching-chatbot-production.up.railway.app/api/users'
 
   getAllUsers() {
     return this.http.get<any[]>(this.usersUrl);
