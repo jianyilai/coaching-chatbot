@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NotificationService } from 'app/notification.service';
 import { ToDoService } from 'app/to-do.service';
 
@@ -36,7 +37,7 @@ export class ToDoComponent implements OnInit {
   editForm!: FormGroup;
   addForm!: FormGroup;
 
-  constructor(private toDoService: ToDoService, private notificationService: NotificationService, private fb:
+  constructor(private toDoService: ToDoService, private router: Router, private notificationService: NotificationService, private fb:
     FormBuilder) {
     this.editForm = this.fb.group({
       title: ['', Validators.required],
@@ -93,17 +94,26 @@ export class ToDoComponent implements OnInit {
           console.log('this task does not have a notification')
           this.notificationService.insertNotification(taskId, this.editForm.value.title, this.editForm.value.dueBy).subscribe();
           console.log('notification added')
-          location.reload()
+          this.router.navigate(['/to-do'])
+            .then(() => {
+              window.location.reload();
+            });
         } else {
           console.log('This task have a notification')
           // check if the title is changed
           if (this.selectedTaskNotifData.message == this.editForm.value.title && this.selectedTaskNotifData.scheduledTime == this.editForm.value.dueBy) {
             console.log('No changes to notification')
-            location.reload()
+            this.router.navigate(['/to-do'])
+              .then(() => {
+                window.location.reload();
+              });
           } else {
             this.notificationService.updateNotification(this.selectedTaskNotifData._id, taskId, this.editForm.value.title, this.editForm.value.dueBy).subscribe();
             console.log('Notification Updated')
-            location.reload()
+            this.router.navigate(['/to-do'])
+              .then(() => {
+                window.location.reload();
+              });
           }
         }
       } else {
@@ -115,10 +125,16 @@ export class ToDoComponent implements OnInit {
           // remove notification
           this.notificationService.deleteNotification(this.selectedTaskNotifData._id).subscribe();
           console.log('notification removed')
-          location.reload()
+          this.router.navigate(['/to-do'])
+            .then(() => {
+              window.location.reload();
+            });
         } else {
           console.log('no notification needed')
-          location.reload()
+          this.router.navigate(['/to-do'])
+            .then(() => {
+              window.location.reload();
+            });
         }
       }
     });
@@ -131,10 +147,16 @@ export class ToDoComponent implements OnInit {
       console.log(insertedId);  // insertedId is the ObjectId of the inserted task
       if (this.addForm.value.reminder == true) {
         this.notificationService.insertNotification(insertedId, this.addForm.value.title, this.addForm.value.dueBy).subscribe();
-        location.reload()
+        this.router.navigate(['/to-do'])
+          .then(() => {
+            window.location.reload();
+          });
         console.log('reminder added')
       } else {
-        location.reload()
+        this.router.navigate(['/to-do'])
+          .then(() => {
+            window.location.reload();
+          });
       }
     });
     this.addFormModal.hide();
@@ -148,11 +170,17 @@ export class ToDoComponent implements OnInit {
     this.notificationService.getNotificationByTaskId(_id).subscribe((data: any) => {
       this.selectedTaskNotifData = data
       if (!this.selectedTaskNotifData) {
-        location.reload()
+        this.router.navigate(['/to-do'])
+          .then(() => {
+            window.location.reload();
+          });
       }
       else {
         this.notificationService.deleteNotification(this.selectedTaskNotifData._id).subscribe();
-        location.reload()
+        this.router.navigate(['/to-do'])
+          .then(() => {
+            window.location.reload();
+          });
       }
     });
   }
