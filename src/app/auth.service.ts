@@ -11,15 +11,18 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  reguserUrl: string = "http://localhost:3000/api/reguser"
+  authuserUrl: string = "http://localhost:3000/api/authuser"
+
   regUser(username: string, email: string, pw: string, role: string) {
-    return this.http.post<any[]>('https://coaching-bot-app.cloudfunctions.net/reguser', {
+    return this.http.post<any[]>(this.reguserUrl, {
       'username': username,
       'email': email,
       'password': pw, 'role': role
     });
   }
   authUser(username: string, pw: string) {
-    return this.http.post<any[]>('https://coaching-bot-app.cloudfunctions.net/authuser', {
+    return this.http.post<any[]>(this.authuserUrl, {
       'username': username,
       'password': pw
     });
