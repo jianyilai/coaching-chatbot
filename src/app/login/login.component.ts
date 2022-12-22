@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
         if (this.results[0].auth) {
           this.authService.loggedIn(this.results[0].token);
           this.router.navigateByUrl('/');
-          location.reload()
+          setTimeout(location.reload.bind(location), 2000);
         } else {
           console.log("Wrong username or password")
         }
