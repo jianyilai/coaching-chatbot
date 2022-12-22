@@ -20,4 +20,4 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 - [x] CRUD for Users
 - [x] Reminder Email Notification
 - [x] Front-end Hosting on Github Pages
-- [ ] Back-end Hosting
+- [x] Back-end Hosting on Railway.app
