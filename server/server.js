@@ -21,7 +21,7 @@ app.get('*', (req, res) => {
 /**
 * Get port from environment and store in Express.
 */
-const port = process.env.PORT || '3000';
+const port = process.env.PORT;
 app.set('port', port);
 /**
 * Create HTTP server.
