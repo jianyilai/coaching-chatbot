@@ -13,14 +13,16 @@
                                     <form [formGroup]="authForm" novalidate (ngSubmit)="onSubmitAuth()">
                                         <div class="group"> <label for="user" class="label form-label">Username</label>
                                             <input formControlName="username" id="username" type="text" class="input"
-                                                placeholder="Enter your username">
+                                                placeholder="Enter your username" required>
                                         </div>
                                         <div class="group"> <label for="pass" class="label form-label">Password</label>
                                             <input formControlName="password" id="password" type="password"
-                                                class="input" data-type="password" placeholder="Enter your password">
+                                                class="input" data-type="password" placeholder="Enter your password"
+                                                required>
                                         </div>
                                         <br>
-                                        <div class="group"> <input type="submit" class="button" value="Sign In"> </div>
+                                        <div class="group"> <input type="submit" class="button" value="Sign In"
+                                                [disabled]="authForm.invalid"> </div>
                                     </form>
                                 </div>
                                 <div class="sign-up-form">
@@ -28,19 +30,21 @@
                                         <div class="group"> <label for="username1"
                                                 class="label form-label">Username</label>
                                             <input formControlName="username" id="username1" type="text" class="input"
-                                                placeholder="Enter your username">
+                                                placeholder="Enter your username" required>
                                         </div>
                                         <div class="group"> <label for="email" class="label form-label">Email</label>
                                             <input formControlName="email" id="email" type="text" class="input"
-                                                placeholder="Enter your email">
+                                                placeholder="Enter your email" required>
                                         </div>
                                         <div class="group"> <label for="password1"
                                                 class="label form-label">Password</label>
                                             <input formControlName="password" id="password1" type="password"
-                                                class="input" data-type="password" placeholder="Enter your password">
+                                                class="input" data-type="password" placeholder="Enter your password"
+                                                required>
                                         </div>
                                         <br>
-                                        <div class="group"> <input type="submit" class="button" value="Sign Up"> </div>
+                                        <div class="group"> <input type="submit" class="button" value="Sign Up"
+                                                [disabled]="regForm.invalid"></div>
                                     </form>
                                 </div>
                             </div>

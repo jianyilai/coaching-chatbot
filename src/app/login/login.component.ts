@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +16,11 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private authService: AuthService,
     private router: Router) {
-      if (this.authService.isLoggedIn()) {
-        // redirect to profile page if already logged in
-        this.router.navigateByUrl('/profile');
-      }
+    if (this.authService.isLoggedIn()) {
+      // redirect to profile page if already logged in
+      this.router.navigateByUrl('/profile');
     }
+  }
 
   ngOnInit() {
     this.authForm = this.fb.group({
@@ -29,9 +29,9 @@ export class LoginComponent implements OnInit {
     });
 
     this.regForm = this.fb.group({
-      username: '',
-      email: '',
-      password: ''
+      username: ['', Validators.required],
+      email: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
@@ -43,14 +43,15 @@ export class LoginComponent implements OnInit {
           this.authService.loggedIn(this.results[0].token);
           location.reload()
         } else {
-          console.log("Wrong username or password")
+          alert('Wrong username or password');
         }
       });
   }
 
   onSubmitReg() {
     this.authService.regUser(this.regForm.value.username, this.regForm.value.email, this.regForm.value.password, 'user').subscribe();
-    console.log('user registered')
+    this.regForm.reset();
+    alert('User Registered');
   }
 
 }

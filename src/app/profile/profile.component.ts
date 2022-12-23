@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'app/auth.service';
 import { UserService } from 'app/user.service';
-import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   updatePasswordForm!: FormGroup;
   updateEmailForm!: FormGroup;
 
-  constructor(private userService: UserService, private router: Router, private fb:
+  constructor(private userService: UserService, private authService: AuthService, private fb:
     FormBuilder) {
     this.updatePasswordForm = this.fb.group({
       password: ['', Validators.required]
@@ -34,15 +34,25 @@ export class ProfileComponent implements OnInit {
 
   onUpdatePass() {
     this.userService.updatePassword(this.updatePasswordForm.value.password).subscribe(res => {
-      console.log('Password Changed');
+      alert('Password Changed');
       location.reload()
     })
   }
 
   onUpdateEmail() {
     this.userService.updateEmail(this.updateEmailForm.value.email).subscribe(res => {
-      console.log('Email Changed');
+      alert('Email Changed');
       location.reload()
     })
+  }
+
+  onDelete() {
+    const result = window.confirm('Are you sure you want to delete this account?');
+    if (result) {
+      this.userService.deleteAccount(this.authService.getSecureToken()).subscribe(() => {
+        this.authService.logout();
+        location.reload();
+      });
+    }
   }
 }
