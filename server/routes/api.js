@@ -132,7 +132,7 @@ router.route('/users/:_id').get(function (req, res) {
 // delete user based on id
 router.route('/users/:_id').delete(function (req, res) {
     var userId = req.params.userId
-    db.collection('users').deleteOne({ _id: Object(userId) }, (err,
+    db.collection('users').deleteOne({ _id: ObjectId(userId) }, (err,
         results) => {
         res.send(results);
     });
