@@ -33,4 +33,8 @@ export class UserService {
       'email': email
     });
   }
+
+  deleteAccount(_id: string) {
+    return this.http.delete<any[]>(this.usersUrl + "/" + _id);
+  }
 }
