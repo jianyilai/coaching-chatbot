@@ -36,7 +36,7 @@ const offset = date.getTimezoneOffset();
 date.setMinutes(date.getMinutes() - offset + 480);  // Singapore TImezone is 8 hours behind
 const currentDate = date.toISOString().substr(0, 10);
 
-cron.schedule('* */1 * * *', async () => {  // run cron job every hour (can be changed)
+cron.schedule('0 * * * *', async () => {  // run cron job every hour (can be changed)
     console.log('cron job is running')
     // query the database for email notification schedules that are due to be sent
     const schedules = await db.collection("notifications").find({ scheduledTime: { $lte: currentDate } }).toArray();
@@ -132,7 +132,7 @@ router.route('/users/:_id').get(function (req, res) {
 // delete user based on id
 router.route('/users/:_id').delete(function (req, res) {
     var userId = req.params.userId
-    db.collection('users').deleteOne({ userId }, (err,
+    db.collection('users').deleteOne({ _id: Object(userId) }, (err,
         results) => {
         res.send(results);
     });
@@ -195,6 +195,7 @@ router.route('/tasks/:_id').get(function (req, res) {
         });
 });
 
+//create task
 router.route('/tasks').post(async (req, res) => {
     var title = req.body.title;
     var dueBy = req.body.dueBy;
