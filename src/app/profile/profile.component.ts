@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
   onDelete() {
     const result = window.confirm('Are you sure you want to delete this account?');
     if (result) {
-      this.userService.deleteAccount(this.authService.getSecureToken()).subscribe(() => {
+      this.userService.deleteAccount().subscribe(() => {
         this.authService.logout();
         location.reload();
       });

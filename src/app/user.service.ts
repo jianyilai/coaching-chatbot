@@ -34,7 +34,8 @@ export class UserService {
     });
   }
 
-  deleteAccount(_id: string) {
-    return this.http.delete<any[]>(this.usersUrl + "/" + _id);
+  deleteAccount() {
+    const userId = this.authService.getUserId()
+    return this.http.delete<any[]>(this.usersUrl + "/" + userId);
   }
 }
