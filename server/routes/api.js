@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const BCRYPT_SALT_ROUNDS = 12;
 
-const cron = require('node-cron');
+const nodeSchedule = require('node-schedule');
 const nodemailer = require('nodemailer');
 
 var db;
@@ -36,10 +36,11 @@ const offset = date.getTimezoneOffset();
 date.setMinutes(date.getMinutes() - offset + 480);  // Singapore TImezone is 8 hours behind
 const currentDate = date.toISOString().substr(0, 10);
 
-cron.schedule('0 * * * *', async () => {  // run cron job every hour (can be changed)
+nodeSchedule.scheduleJob('* */1 * * *', async () => {  // run cron job every hour (can be changed)
     console.log('cron job is running')
     // query the database for email notification schedules that are due to be sent
     const schedules = await db.collection("notifications").find({ scheduledTime: { $lte: currentDate } }).toArray();
+    console.log(schedules)
     // send emails using Nodemailer
     schedules.forEach(async (schedule) => {
         transporter.sendMail({
@@ -281,8 +282,6 @@ router.route('/notifications/:_id').put(function (req, res) {
     var email = req.body.email;
     var message = req.body.message;
     var scheduledTime = req.body.scheduledTime
-    console.log(req.params + 'notif params')
-    console.log(req.body + 'notif body')
     db.collection('notifications').updateOne({ _id: ObjectId(req.params._id) }, {
         $set: { "taskId": taskId, "email": email, "message": message, "scheduledTime": scheduledTime }
     }, (err, result) => {
