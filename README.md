@@ -1,5 +1,7 @@
 <div align="center">
-![Workio Logo](https://user-images.githubusercontent.com/97088842/209456137-6449f780-7777-4637-8932-b06a4992522c.png)
+
+<img src="https://user-images.githubusercontent.com/97088842/209456137-6449f780-7777-4637-8932-b06a4992522c.png" alt="Workio Logo" width="200"/>
+
 <h1 align="center">AI Chatbot for Asynchronous Learning</h1>
 </div>
 
