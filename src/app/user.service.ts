@@ -9,7 +9,7 @@ export class UserService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  usersUrl: string = 'https://coaching-chatbot-production.up.railway.app/api/users'
+  usersUrl: string = 'https://coaching-chatbot-production-c6a7.up.railway.app/api/users'
 
   getAllUsers() {
     return this.http.get<any[]>(this.usersUrl);

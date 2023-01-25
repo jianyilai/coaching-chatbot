@@ -10,7 +10,7 @@ export class ToDoService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  tasksUrl: string = 'https://coaching-chatbot-production.up.railway.app/api/tasks'
+  tasksUrl: string = 'https://coaching-chatbot-production-c6a7.up.railway.app/api/tasks'
 
   getAllTasks() {
     return this.http.get<any[]>(this.tasksUrl);
